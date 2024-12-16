@@ -85,6 +85,7 @@ def sample(model, scheduler, train_config, diffusion_model_config,
         if not os.path.exists(os.path.join(train_config['task_name'], 'cond_class_samples')):
             os.mkdir(os.path.join(train_config['task_name'], 'cond_class_samples'))
         img.save(os.path.join(train_config['task_name'], 'cond_class_samples', 'x0_{}.png'.format(i)))
+        print(os.path.join(train_config['task_name'], 'cond_class_samples', 'x0_{}.png'.format(i)))
         img.close()
     ##############################################################
 
@@ -119,7 +120,7 @@ def infer(args):
         print('Loaded unet checkpoint')
         model.load_state_dict(torch.load(os.path.join(train_config['task_name'],
                                                       train_config['ldm_ckpt_name']),
-                                         map_location=device))
+                                         map_location=device), strict=False)
     else:
         raise Exception('Model checkpoint {} not found'.format(os.path.join(train_config['task_name'],
                                                                             train_config['ldm_ckpt_name'])))

@@ -242,17 +242,18 @@ def train(args):
                 )
             )
 
+        # Ensure the directory exists
+        save_dir = train_config["task_name"]
+        os.makedirs(save_dir, exist_ok=True)
+
+        # Save model and discriminator state_dicts
         torch.save(
             model.state_dict(),
-            os.path.join(
-                train_config["task_name"], train_config["vqvae_autoencoder_ckpt_name"]
-            ),
+            os.path.join(save_dir, f"{train_config['vqvae_autoencoder_ckpt_name']}_{epoch_idx + 1:02}")
         )
         torch.save(
             discriminator.state_dict(),
-            os.path.join(
-                train_config["task_name"], train_config["vqvae_discriminator_ckpt_name"]
-            ),
+            os.path.join(save_dir, f"{train_config['vqvae_discriminator_ckpt_name']}_{epoch_idx + 1:02}")
         )
     print("Done Training...")
 

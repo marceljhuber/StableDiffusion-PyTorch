@@ -3,6 +3,8 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 from torch.optim import Adam
+
+from dataset.kermany_dataset import KermanyDataset
 from dataset.mnist_dataset import MnistDataset
 from dataset.celeb_dataset import CelebDataset
 from torch.utils.data import DataLoader
@@ -60,6 +62,7 @@ def train(args):
     im_dataset_cls = {
         'mnist': MnistDataset,
         'celebhq': CelebDataset,
+        'kermany': KermanyDataset,
     }.get(dataset_config['name'])
     
     im_dataset = im_dataset_cls(split='train',
@@ -110,6 +113,7 @@ def train(args):
     
     # Run training
     for epoch_idx in range(num_epochs):
+        print(os.path.join(train_config['task_name'], train_config['ldm_ckpt_name']).split('.') + f'_{epoch_idx + 1:02}.pth')
         losses = []
         for data in tqdm(data_loader):
             cond_input = None
@@ -173,7 +177,9 @@ def train(args):
             epoch_idx + 1,
             np.mean(losses)))
         torch.save(model.state_dict(), os.path.join(train_config['task_name'],
-                                                    train_config['ldm_ckpt_name']))
+                                                    train_config['ldm_ckpt_name']).split('.') +
+                                                    f'_{epoch_idx + 1:02}.pth'
+                                                    )
     
     print('Done Training ...')
 
