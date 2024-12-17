@@ -1,14 +1,13 @@
 dataset_params:
-  im_path: '../KermanyV3_resized/train'
-  im_channels: 1
-  im_size: 256  # Changed from 28 to 256
+  im_path: '../../data/KermanyV3/train'
+  im_channels : 1
+  im_size : 128
   name: 'kermany'
 
 diffusion_params:
-  num_timesteps: 1000
-  beta_start : 0.00085
-  beta_end : 0.012
-  class: 3
+  num_timesteps : 1000
+  beta_start: 0.00085
+  beta_end: 0.012
 
 ldm_params:
   down_channels: [ 256, 384, 512, 768 ]
@@ -23,10 +22,10 @@ ldm_params:
   num_mid_layers : 2
   num_up_layers : 2
   condition_config:
-    condition_types: [ 'class' ]
-    class_condition_config:
-      num_classes: 4
-      cond_drop_prob: 0.1
+    condition_types: ['class']
+    class_condition_config :
+      num_classes : 4
+      cond_drop_prob : 0.1
 
 autoencoder_params:
   z_channels: 4
@@ -42,28 +41,28 @@ autoencoder_params:
   num_up_layers : 2
 
 train_params:
-  seed: 1111
-  task_name: 'kermany_256_V2'
-  ldm_batch_size: 64  # Reduced batch size due to larger images
-  autoencoder_batch_size: 32  # Reduced batch size due to larger images
-  disc_start: 1000
+  seed : 1111
+  task_name: 'kermany_medium'
+  ldm_batch_size: 16
+  autoencoder_batch_size: 16
+  disc_start: 15000
   disc_weight: 0.5
   codebook_weight: 1
   commitment_beta: 0.2
   perceptual_weight: 1
   kl_weight: 0.000005
-  ldm_epochs: 100
+  ldm_epochs : 100
   autoencoder_epochs: 20
-  num_samples: 25
-  num_grid_rows: 5
-  ldm_lr: 0.00001
-  autoencoder_lr: 0.0001
-  autoencoder_acc_steps: 1
-  autoencoder_img_save_steps: 8
-  save_latents: False
-  cf_guidance_scale: 1.0
-  vae_latent_dir_name: 'vae_latents'
-  vqvae_latent_dir_name: 'vqvae_latents'
+  num_samples: 1
+  num_grid_rows: 1
+  ldm_lr: 0.000005
+  autoencoder_lr: 0.00001
+  autoencoder_acc_steps: 4
+  autoencoder_img_save_steps: 64
+  save_latents : False
+  cf_guidance_scale : 1.0
+  vae_latent_dir_name : 'vae_latents'
+  vqvae_latent_dir_name : 'vqvae_latents'
   ldm_ckpt_name: 'ddpm_ckpt_class_cond.pth'
   vqvae_autoencoder_ckpt_name: 'vqvae_autoencoder_ckpt.pth'
   vae_autoencoder_ckpt_name: 'vae_autoencoder_ckpt.pth'
